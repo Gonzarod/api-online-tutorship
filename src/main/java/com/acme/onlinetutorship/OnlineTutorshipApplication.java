@@ -12,9 +12,5 @@ public class OnlineTutorshipApplication {
         SpringApplication.run(OnlineTutorshipApplication.class, args);
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
 
 }

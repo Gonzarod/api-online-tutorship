@@ -16,6 +16,7 @@ import java.util.*;
 
 @Component
 public class DataLoad {
+
     private final RoleRepository roleRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
@@ -52,15 +53,18 @@ public class DataLoad {
 
     private void addCourses() {
         this.courseRepository.saveAll(Arrays.asList(
-                new Course("Spanish", "Spanish"),
-                new Course("History", "History"),
-                new Course("Arithmetics", "Arithmetics"),
-                new Course("Geometry", "Geometry"),
-                new Course("Geography", "Geography"),
-                new Course("Algebra", "Algebra"),
-                new Course("Chemistry", "Chemistry"),
-                new Course("Physics", "Physics"),
-                new Course("Biology", "Biology")
+                new Course("Francés", "Descripción de Francés avanzado"),
+                new Course("Inglés","Descripción de Inglés"),
+                new Course("Aritmética", "Descripción de Aritmética"),
+                new Course("Geometría", "Descripción de Geometría"),
+                new Course("Álgebra", "Descripción de Álgebra"),
+                new Course("Trigonometría", "Descripción de Trigonometría"),
+                new Course("Geografía", "Descripción de Geografía"),
+                new Course("Historia Universal", "Descripción de Historia Universal"),
+                new Course("Historia del Perú", "Descripción de Historia del Peru"),
+                new Course("Química", "Descripción de Química"),
+                new Course("Física", "Descripción de Física"),
+                new Course("Biología", "Descripción de Biología")
         ));
     }
 
