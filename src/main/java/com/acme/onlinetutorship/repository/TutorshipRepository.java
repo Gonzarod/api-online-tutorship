@@ -14,6 +14,6 @@ public interface TutorshipRepository {
     List<Tutorship> getAllByStudentIdAndStatusEquals(Long studentId, EStatus status);
     List<Tutorship> getAllByStatusEquals(EStatus status);
 
-    Page<Tutorship> getAllByStatusEqualsPage(EStatus status);
+    Page<Tutorship> getAllByStatusEqualsPage(EStatus status, Pageable pageable);
 
 }

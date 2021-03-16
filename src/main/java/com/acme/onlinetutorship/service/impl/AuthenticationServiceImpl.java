@@ -9,10 +9,9 @@ import com.acme.onlinetutorship.security.jwt.JwtUtils;
 import com.acme.onlinetutorship.security.payload.request.LoginRequest;
 import com.acme.onlinetutorship.security.payload.request.SignUpRequest;
 import com.acme.onlinetutorship.security.payload.response.JwtResponse;
-import com.acme.onlinetutorship.security.payload.response.MessageResponse;
+import com.acme.onlinetutorship.security.payload.response.Message;
 import com.acme.onlinetutorship.security.service.UserDetailsImpl;
 import com.acme.onlinetutorship.service.AuthenticationService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,13 +51,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Username is already taken!"));
+                    .body(new Message("Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Email is already taken"));
+                    .body(new Message("Email is already taken"));
         }
 
         // Create new user's account
@@ -69,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Role must not be null ):"));
+            return ResponseEntity.badRequest().body(new Message("Role must not be null ):"));
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
@@ -127,7 +126,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleOne, userDetails.getName(),
                     userDetails.getLastName(), userDetails.getDni(), userDetails.getPhone()));
         } catch (AuthenticationException e) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Bad Credentials"));
+            return ResponseEntity.badRequest().body(new Message("Bad Credentials"));
         }
 
     }

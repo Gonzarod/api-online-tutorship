@@ -1,9 +1,8 @@
 package com.acme.onlinetutorship.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,11 +11,15 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
+
+@JsonPropertyOrder({ "id", "name", "description"})
 @Entity
 @Table(name = "courses")
-@NoArgsConstructor //Request by Model Mapper
-@Getter
-@Setter
+//@NoArgsConstructor //Request by Model Mapper
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,4 +43,5 @@ public class Course implements Serializable {
         this.name=name;
         this.description=description;
     }
+
 }
