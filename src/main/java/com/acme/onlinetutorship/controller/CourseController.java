@@ -37,9 +37,64 @@ public class CourseController extends GenericController {
     @Autowired
     private CourseService courseService;
 
+    @GetMapping("")
+    //@PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Get All Courses", description = "Get All Courses", tags = {"Course"},security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<MessageResponse> getAll(){
+        try {
+            List<Course> courses = this.courseService.getAll();
+
+            if(courses == null || courses.isEmpty()){
+                return super.getNotContentResponseEntity();
+            }
+
+            MessageResponse response = MessageResponse
+                    .builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(courses)
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/filter")
+    //@PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Get All Courses By Name", description = "Get All Courses By Name", tags = {"Course"},security = @SecurityRequirement(name = "bearerAuth")
+    )
+    public ResponseEntity<MessageResponse> getAllByName(@RequestParam(required = false) @Parameter(description = "is Optional") String name){
+
+        try {
+            List<Course> courses = this.courseService.getCoursesByName(name);
+
+            if(courses == null || courses.isEmpty()){
+                return super.getNotContentResponseEntity();
+            }
+
+            MessageResponse response = MessageResponse
+                    .builder()
+                    .code(ResponseConstants.SUCCESS_CODE)
+                    .message(ResponseConstants.MSG_SUCCESS_CONS)
+                    .data(courses)
+                    .build();
+
+            return ResponseEntity.ok(response);
+
+        } catch (ServiceException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/page")
     //@PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Get All Courses", description = "Get All Courses. Can filter by name (param optional).Endpoint can be accessed by any role", tags = {"Course"},
+    @Operation(summary = "Get All Courses paginated", description = "Get All Courses paginated", tags = {"Course"},
             parameters = {
                     @Parameter(in = ParameterIn.QUERY
                             , description = "Page you want to retrieve (0..N)"
@@ -78,14 +133,27 @@ public class CourseController extends GenericController {
         }
     }
 
-
-    @GetMapping("")
+    @GetMapping("/page/filter")
     //@PreAuthorize("isAuthenticated()")
-    @Operation(summary = "Get All Courses", description = "Get All Courses", tags = {"Course"},security = @SecurityRequirement(name = "bearerAuth")
-    )
-    public ResponseEntity<MessageResponse> getAll(){
+    @Operation(summary = "Get All Courses paginated by name", description = "Get All Courses paginated by name. Can filter by name (param optional)", tags = {"Course"},
+            parameters = {
+                    @Parameter(in = ParameterIn.QUERY
+                            , description = "Page you want to retrieve (0..N)"
+                            , name = "page"
+                            , content = @Content(schema = @Schema(type = "integer", defaultValue = "0"))),
+                    @Parameter(in = ParameterIn.QUERY
+                            , description = "Number of records per page."
+                            , name = "size"
+                            , content = @Content(schema = @Schema(type = "integer", defaultValue = "20"))),
+                    @Parameter(in = ParameterIn.QUERY
+                            , description = "Sorting criteria in the format: property(,asc|desc). "
+                            + "Default sort order is ascending. " + "Multiple sort criteria are supported."
+                            , name = "sort"
+                            , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
+            },security = @SecurityRequirement(name = "bearerAuth"))
+    public ResponseEntity<MessageResponse> getAllPaginatedByName(@PageableDefault @Parameter(hidden = true) Pageable pageable, @RequestParam(required = false) @Parameter(description = "is Optional") String name ){
         try {
-            List<Course> courses = this.courseService.getAll();
+            Page<Course> courses = this.courseService.getCoursesPaginatedByName(name,pageable);
 
             if(courses == null || courses.isEmpty()){
                 return super.getNotContentResponseEntity();
@@ -105,7 +173,6 @@ public class CourseController extends GenericController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @GetMapping("/{id}")
     //@PreAuthorize("isAuthenticated()")
@@ -237,5 +304,8 @@ public class CourseController extends GenericController {
 
 
 
-    
+
+
+
+
 }

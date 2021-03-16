@@ -48,6 +48,7 @@
             <scope>test</scope>
         </dependency>
         <!-- Open API -->
+
         <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
         <dependency>
             <groupId>org.springdoc</groupId>
