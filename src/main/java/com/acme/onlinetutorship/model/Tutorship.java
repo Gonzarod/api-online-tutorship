@@ -1,5 +1,6 @@
 package com.acme.onlinetutorship.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tutorship")
+@Data
 @Getter
 @Setter
 public class Tutorship implements Serializable {
@@ -46,8 +48,8 @@ public class Tutorship implements Serializable {
     private User student;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "teacher_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "teacher_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     //@JsonIgnore
     private User teacher;
@@ -58,7 +60,7 @@ public class Tutorship implements Serializable {
     //@JsonIgnore
     private Course course;
 
-    public Tutorship(LocalDateTime start_at,LocalDateTime end_at,EStatus status,String topic,String link,User student,Course course){
+    public Tutorship(LocalDateTime start_at,LocalDateTime end_at,EStatus status,String topic,User student,Course course){
         this.start_at=start_at;
         this.end_at=end_at;
         this.status=status;
@@ -70,4 +72,5 @@ public class Tutorship implements Serializable {
     public Tutorship() {
 
     }
+
 }

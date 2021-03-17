@@ -1,4 +1,10 @@
 package com.acme.onlinetutorship.service;
 
-public interface TutorshipService {
+import com.acme.onlinetutorship.model.Tutorship;
+
+public interface TutorshipService extends GenericService<Tutorship>{
+
+
+
+
 }
