@@ -17,7 +17,7 @@ import java.util.Optional;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
-    private CourseRepository courseRepository;
+    CourseRepository courseRepository;
 
     @Override
     public List<Course> getAll() throws ServiceException {

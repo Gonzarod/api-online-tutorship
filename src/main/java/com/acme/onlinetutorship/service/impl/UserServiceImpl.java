@@ -28,7 +28,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(User user) throws ServiceException {
-        return Optional.empty();
+        try {
+            return this.userRepository.findById(user.getId());
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.acme.onlinetutorship.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,8 +14,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tutorship")
 @Data
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
 public class Tutorship implements Serializable {
 
     @Id

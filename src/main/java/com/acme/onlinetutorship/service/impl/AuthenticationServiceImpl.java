@@ -104,30 +104,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
-        try{
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+    public JwtResponse authenticateUser(LoginRequest loginRequest) {
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtils.generateJwtToken(authentication);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(item -> item.getAuthority())
-                    .collect(Collectors.toList());
-            String roleOne="";
-            for(String r: roles){
-                roleOne=roleOne.concat(r);
-            }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-
-            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleOne, userDetails.getName(),
-                    userDetails.getLastName(), userDetails.getDni(), userDetails.getPhone()));
-        } catch (AuthenticationException e) {
-            return ResponseEntity.badRequest().body(new Message("Bad Credentials"));
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+        String roleOne="";
+        for(String r: roles){
+            roleOne=roleOne.concat(r);
         }
+
+        return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roleOne, userDetails.getName(),
+                userDetails.getLastName(), userDetails.getDni(), userDetails.getPhone());
+
+
+
 
     }
 

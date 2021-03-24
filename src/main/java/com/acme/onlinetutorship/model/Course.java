@@ -15,8 +15,8 @@ import java.util.List;
 @JsonPropertyOrder({ "id", "name", "description"})
 @Entity
 @Table(name = "courses")
-//@NoArgsConstructor //Request by Model Mapper
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
